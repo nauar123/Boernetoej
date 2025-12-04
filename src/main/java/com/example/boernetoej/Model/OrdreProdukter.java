@@ -1,7 +1,4 @@
 package com.example.boernetoej.Model;
 
-public class Kunde {
-
-
-
+public class OrdreProdukter {
 }

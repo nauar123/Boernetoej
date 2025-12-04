@@ -1,7 +1,4 @@
 package com.example.boernetoej.Repository;
 
-public class KundeRepo {
-
-
-
+public class ProdukterRepo {
 }

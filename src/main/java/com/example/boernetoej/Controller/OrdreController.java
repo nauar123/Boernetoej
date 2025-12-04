@@ -1,9 +1,4 @@
 package com.example.boernetoej.Controller;
 
-public class KundeController {
-
-
-
-
+public class OrdreController {
 }
-
