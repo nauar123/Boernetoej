@@ -1,6 +1,5 @@
 package com.example.boernetoej.Model;
-import com.example.boernetoej.Model.Ordre;
-import com.example.boernetoej.Model.Produkter;
+
 import jakarta.persistence.*;
 
 
