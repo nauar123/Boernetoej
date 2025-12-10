@@ -11,13 +11,14 @@ public class Ordre {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "ordre_id")
+    private int ordreId;
 
     @ManyToOne
     @JoinColumn(name="kunde_id")
     private Kunde kunde;
 
-    @Column(name = "ordre_id")
-    private int ordreId;
+
     @Column(name="ordre_dato")
     private LocalDate ordreDato;
     @Column (name="total_pris")
