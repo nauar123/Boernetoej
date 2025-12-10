@@ -16,6 +16,7 @@ public class Produkter {
     @Column(name = "produkt_id")
     private int produktId;
     private String titel;
+    private String beskrivelse;
     private double pris;
     private String stoerrelse;
 
@@ -29,8 +30,9 @@ public class Produkter {
     public Produkter() {}
 
 
-    public Produkter(String titel, double pris, String stoerrelse, String billedeUrl) {
+    public Produkter(String titel,String beskrivelse, double pris, String stoerrelse, String billedeUrl) {
         this.titel = titel;
+        this.beskrivelse = beskrivelse;
         this.pris = pris;
         this.stoerrelse = stoerrelse;
         this.billedeUrl = billedeUrl;
@@ -56,6 +58,15 @@ public class Produkter {
         this.titel = titel;
     }
 
+    public String getBeskrivelse()
+    {
+        return beskrivelse;
+    }
+
+    public void setBeskrivelse(String beskrivelse)
+    {
+        this.beskrivelse = beskrivelse;
+    }
 
     public double getPris() {
         return pris;

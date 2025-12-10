@@ -45,6 +45,7 @@ public class ProdukterController {
     public Produkter opdaterProdukt(@PathVariable int id, @RequestBody Produkter opdateret) {
         return produkterRepo.findById(id).map(p -> {
             p.setTitel(opdateret.getTitel());
+            p.setBeskrivelse(opdateret.getBeskrivelse());
             p.setPris(opdateret.getPris());
             p.setStoerrelse(opdateret.getStoerrelse());
             p.setBilledeUrl(opdateret.getBilledeUrl());
