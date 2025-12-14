@@ -1,7 +1,8 @@
 package com.example.boernetoej.Controller;
 
 import com.example.boernetoej.Model.Produkter;
-import com.example.boernetoej.Repository.ProdukterRepo;
+import com.example.boernetoej.Service.ProdukterService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,52 +11,53 @@ import java.util.List;
 @RequestMapping("/produkter")
 public class ProdukterController {
 
-    private final ProdukterRepo produkterRepo;
+@Autowired
+    private ProdukterService produkterService;
 
-    public ProdukterController(ProdukterRepo produkterRepo) {
-        this.produkterRepo = produkterRepo;
-    }
 
-    // opret produkt
+    // OPRET produkt
     @PostMapping("/opret")
     public Produkter opretProdukt(@RequestBody Produkter produkt) {
-        return produkterRepo.save(produkt);
+        return produkterService.gemProdukt(produkt);
     }
 
-    // henter alle
+    // HENT alle produkter
     @GetMapping
     public List<Produkter> hentAlle() {
-        return produkterRepo.findAll();
+        return produkterService.findAlle();
     }
 
-    // henter én
+    // HENT ét produkt
     @GetMapping("/{id}")
     public Produkter hentEt(@PathVariable int id) {
-        return produkterRepo.findById(id).orElse(null);
+        return produkterService.findById(id).orElse(null);
     }
 
-    // søg på titel/profukt navn
+    // SØG på titel / produktnavn
     @GetMapping("/soeg")
     public List<Produkter> soeg(@RequestParam String titel) {
-        return produkterRepo.findByTitelContaining(titel);
+        return produkterService.søgPåTitel(titel);
     }
 
-    // updaterr
+    // OPDATER produkt
     @PutMapping("/opdater/{id}")
-    public Produkter opdaterProdukt(@PathVariable int id, @RequestBody Produkter opdateret) {
-        return produkterRepo.findById(id).map(p -> {
+    public Produkter opdaterProdukt(
+            @PathVariable int id,
+            @RequestBody Produkter opdateret) {
+
+        return produkterService.findById(id).map(p -> {
             p.setTitel(opdateret.getTitel());
             p.setBeskrivelse(opdateret.getBeskrivelse());
             p.setPris(opdateret.getPris());
             p.setStoerrelse(opdateret.getStoerrelse());
             p.setBilledeUrl(opdateret.getBilledeUrl());
-            return produkterRepo.save(p);
+            return produkterService.gemProdukt(p);
         }).orElse(null);
     }
 
-    // delete
+    // SLET produkt
     @DeleteMapping("/slet/{id}")
     public void sletProdukt(@PathVariable int id) {
-        produkterRepo.deleteById(id);
+        produkterService.sletProdukt(id);
     }
 }

@@ -1,7 +1,8 @@
 package com.example.boernetoej.Controller;
 
 import com.example.boernetoej.Model.Kunde;
-import com.example.boernetoej.Repository.KundeRepo;
+import com.example.boernetoej.Service.KundeService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,44 +11,41 @@ import java.util.List;
 @RequestMapping("/kunder")
 public class KundeController {
 
-    private final KundeRepo kundeRepo;
+    @Autowired
+    private  KundeService kundeService;
 
-    public KundeController(KundeRepo kundeRepo) {
-        this.kundeRepo = kundeRepo;
-    }
-
-
+    // OPRET kunde
     @PostMapping("/opret")
     public Kunde opretKunde(@RequestBody Kunde kunde) {
-        return kundeRepo.save(kunde);
+        return kundeService.gemKunde(kunde);
     }
 
-
+    // HENT alle kunder
     @GetMapping
     public List<Kunde> hentAlleKunder() {
-        return kundeRepo.findAll();
+        return kundeService.findAlle();
     }
 
-
+    // HENT kunde via ID
     @GetMapping("/{id}")
     public Kunde hentKunde(@PathVariable int id) {
-        return kundeRepo.findById(id).orElse(null);
+        return kundeService.findById(id).orElse(null);
     }
 
-
+    // OPDATER kunde
     @PutMapping("/opdater/{id}")
     public Kunde opdaterKunde(@PathVariable int id, @RequestBody Kunde opdateret) {
-        return kundeRepo.findById(id).map(k -> {
+        return kundeService.findById(id).map(k -> {
             k.setNavn(opdateret.getNavn());
             k.setEmail(opdateret.getEmail());
             k.setAdresse(opdateret.getAdresse());
-            return kundeRepo.save(k);
+            return kundeService.gemKunde(k);
         }).orElse(null);
     }
 
-
+    // SLET kunde
     @DeleteMapping("/slet/{id}")
     public void sletKunde(@PathVariable int id) {
-        kundeRepo.deleteById(id);
+        kundeService.sletKunde(id);
     }
 }
