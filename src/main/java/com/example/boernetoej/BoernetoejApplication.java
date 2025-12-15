@@ -9,8 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @SpringBootApplication
 public class BoernetoejApplication {
 
-    @Autowired
-    PasswordEncoder passwordEncoder;
+
 
     public static void main(String[] args) {
         SpringApplication.run(BoernetoejApplication.class, args);
