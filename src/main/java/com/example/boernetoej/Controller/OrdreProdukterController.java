@@ -1,7 +1,8 @@
 package com.example.boernetoej.Controller;
 
 import com.example.boernetoej.Model.OrdreProdukter;
-import com.example.boernetoej.Repository.OrdreProdukterRepo;
+import com.example.boernetoej.Service.OrdreProdukterService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,44 +11,46 @@ import java.util.List;
 @RequestMapping("/ordreprodukter")
 public class OrdreProdukterController {
 
-    private final OrdreProdukterRepo ordreProdukterRepo;
+    @Autowired
+    private OrdreProdukterService ordreProdukterService;
 
-    public OrdreProdukterController(OrdreProdukterRepo ordreProdukterRepo) {
-        this.ordreProdukterRepo = ordreProdukterRepo;
-    }
+
 
     // CREATE
     @PostMapping("/opret")
     public OrdreProdukter opretOrdreProdukt(@RequestBody OrdreProdukter ordreProdukt) {
-        return ordreProdukterRepo.save(ordreProdukt);
+        return ordreProdukterService.gem(ordreProdukt);
     }
 
     // READ – alle
     @GetMapping
     public List<OrdreProdukter> hentAlle() {
-        return ordreProdukterRepo.findAll();
+        return ordreProdukterService.findAlle();
     }
 
     // READ – én
     @GetMapping("/{id}")
     public OrdreProdukter hentEt(@PathVariable int id) {
-        return ordreProdukterRepo.findById(id).orElse(null);
+        return ordreProdukterService.findById(id).orElse(null);
     }
 
     // UPDATE
     @PutMapping("/opdater/{id}")
-    public OrdreProdukter opdaterOrdreProdukt(@PathVariable int id, @RequestBody OrdreProdukter opdateret) {
-        return ordreProdukterRepo.findById(id).map(op -> {
+    public OrdreProdukter opdaterOrdreProdukt(
+            @PathVariable int id,
+            @RequestBody OrdreProdukter opdateret) {
+
+        return ordreProdukterService.findById(id).map(op -> {
             op.setOrdre(opdateret.getOrdre());
             op.setProdukt(opdateret.getProdukt());
             op.setAntal(opdateret.getAntal());
-            return ordreProdukterRepo.save(op);
+            return ordreProdukterService.gem(op);
         }).orElse(null);
     }
 
     // DELETE
     @DeleteMapping("/slet/{id}")
     public void sletOrdreProdukt(@PathVariable int id) {
-        ordreProdukterRepo.deleteById(id);
+        ordreProdukterService.slet(id);
     }
 }

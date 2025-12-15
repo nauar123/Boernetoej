@@ -2,7 +2,8 @@ package com.example.boernetoej.Controller;
 
 import com.example.boernetoej.Model.Kunde;
 import com.example.boernetoej.Model.Ordre;
-import com.example.boernetoej.Repository.OrdreRepo;
+import com.example.boernetoej.Service.OrdreService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -11,52 +12,50 @@ import java.util.List;
 @RequestMapping("/ordrer")
 public class OrdreController {
 
-    private final OrdreRepo ordreRepo;
+    @Autowired
 
-    public OrdreController(OrdreRepo ordreRepo) {
-        this.ordreRepo = ordreRepo;
-    }
+    private OrdreService ordreService;
 
-    // Opret ordre
+    // OPRET ordre
     @PostMapping("/opret")
     public Ordre opretOrdre(@RequestBody Ordre ordre) {
-        return ordreRepo.save(ordre);
+        return ordreService.gemOrdre(ordre);
     }
 
-    //henter alle
+    // HENT alle ordrer
     @GetMapping
     public List<Ordre> hentAlle() {
-        return ordreRepo.findAll();
+        return ordreService.findAlle();
     }
 
-    // Henter én
+    // HENT én ordre
     @GetMapping("/{id}")
     public Ordre hentEn(@PathVariable int id) {
-        return ordreRepo.findById(id).orElse(null);
+        return ordreService.findById(id).orElse(null);
     }
 
-    // Finder alle ordrer for en bestemt kunde
+    // HENT ordrer for en bestemt kunde
     @GetMapping("/kunde/{kundeId}")
     public List<Ordre> hentOrdrerForKunde(@PathVariable int kundeId) {
         Kunde kunde = new Kunde();
         kunde.setKundeId(kundeId);
-        return ordreRepo.findByKunde(kunde);
+        return ordreService.findByKunde(kunde);
     }
 
-    // update
+    // OPDATER ordre
     @PutMapping("/opdater/{id}")
     public Ordre opdaterOrdre(@PathVariable int id, @RequestBody Ordre opdateret) {
-        return ordreRepo.findById(id).map(o -> {
+        return ordreService.findById(id).map(o -> {
             o.setKunde(opdateret.getKunde());
             o.setOrdreDato(opdateret.getOrdreDato());
             o.setTotalPris(opdateret.getTotalPris());
-            return ordreRepo.save(o);
+            return ordreService.gemOrdre(o);
         }).orElse(null);
     }
 
-    // delete
+    // SLET ordre
     @DeleteMapping("/slet/{id}")
     public void sletOrdre(@PathVariable int id) {
-        ordreRepo.deleteById(id);
+        ordreService.sletOrdre(id);
     }
 }
