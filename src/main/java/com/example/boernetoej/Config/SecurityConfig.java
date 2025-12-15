@@ -9,37 +9,39 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     @Bean
-    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
 
-                        //  OFFENTLIGE SIDER
+                .authorizeHttpRequests(auth -> auth
+                        // ✅ OFFENTLIG WEBSHOP
                         .requestMatchers(
                                 "/",
                                 "/index.html",
-                                "/login",
-                                "/register",
+                                "/**/*.html",
                                 "/css/**",
                                 "/js/**",
-                                "/images/**"
+                                "/images/**",
+                                "/produkter/**",
+                                "/kunder/opret"
                         ).permitAll()
 
-                        //  PROFIL KRÆVER LOGIN
-                        .requestMatchers("/profil").hasRole("USER")
+                        //  KUN LOGGET-IN BRUGER
+                        .requestMatchers(
+                                "/profil",
+                                "/ordre/**",
+                                "/ordreprodukter/**"
+                        ).hasRole("USER")
 
-                        //  RESTEN KRÆVER LOGIN
                         .anyRequest().authenticated()
                 )
+
                 .formLogin(form -> form
-                        .loginPage("/login")
-                        .defaultSuccessUrl("/", true)
+                        .loginPage("/login.html")
                         .permitAll()
                 )
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/")
-                        .permitAll()
-                );
+
+                .logout(logout -> logout.permitAll());
 
         return http.build();
     }
