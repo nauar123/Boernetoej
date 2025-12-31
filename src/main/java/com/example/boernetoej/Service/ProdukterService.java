@@ -21,6 +21,7 @@ public class ProdukterService {
     }
 
     // Find produkt via ID
+    // helst finde fejl i service og ikke i controlleren
     public Optional<Produkter> findById(int id) {
         return produkterRepo.findById(id);
     }

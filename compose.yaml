@@ -1,0 +1,15 @@
+services:
+  # Det betyder her starter listen over de containere, der skal køre
+
+  backend:
+  #Navnet på servicen, man vælger selv navnet jeg har valgt at kalde den backend.
+    image: boernetoej-backend
+    #Her siges der brug Docker imaget med navn boernetøj-backend, det vi har bygget inden i DockerFile.
+    #den bygger derfor ikke noget den starter bare en container ud fra imaget.
+    ports:
+      - "8080:8080"
+      #(ports)Her defineres der hvilken port-mapping mellem host og container,
+      #(ports)som aplikationen kan tilgå udfra fx browseren.
+      #8080:8080 står for host-port:container-port. Så venstre 8080, er port på ens compoter(host-maskinen)
+      # højre 8080 port på containeren, og backend kører inde i containeren på port 8080. Den kan tilgås http://localhost:8080
+

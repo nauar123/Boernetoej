@@ -24,11 +24,14 @@ public class Produkter {
     @Column(name = "billede_url")
     private String billedeUrl;
 
+    //risiko for broken browser med billedeUrl,
 
+// id det primærnøgle
+    // generer fra primærnøglerne
 
 
     public Produkter() {}
-
+//
 
     public Produkter(String titel,String beskrivelse, double pris, String stoerrelse, String billedeUrl) {
         this.titel = titel;

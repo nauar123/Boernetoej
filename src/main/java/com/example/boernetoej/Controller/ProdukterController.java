@@ -17,6 +17,7 @@ public class ProdukterController {
 
 
     // OPRET produkt
+    // fjerne navnet opret
     @PostMapping("/opret")
     public Produkter opretProdukt(@RequestBody Produkter produkt) {
         return produkterService.gemProdukt(produkt);
@@ -35,12 +36,16 @@ public class ProdukterController {
     }
 
     // SØG på titel / produktnavn
+    // fjerne navnet søg
     @GetMapping("/soeg")
     public List<Produkter> soeg(@RequestParam String titel) {
         return produkterService.søgPåTitel(titel);
     }
 
     // OPDATER produkt
+
+    // Fjerne opdater fra navn fordi hvis man skriver produkter.
+
     @PutMapping("/opdater/{id}")
     public Produkter opdaterProdukt(
             @PathVariable int id,
@@ -56,7 +61,7 @@ public class ProdukterController {
         }).orElse(null);
     }
 
-    // SLET produkt
+    // SLET produkt fjerne slet i url
     @DeleteMapping("/slet/{id}")
     public void sletProdukt(@PathVariable int id) {
         produkterService.sletProdukt(id);
