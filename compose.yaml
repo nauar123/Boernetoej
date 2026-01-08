@@ -1,12 +1,14 @@
 services:
-  # Det betyder her starter listen over de containere, der skal køre
+  # Det betyder: her starter listen over de containere, der skal køre
 
   backend:
     # Navnet på servicen – man vælger selv navnet, her hedder den backend
-    image: boernetoej-backend
-    # Her siges der: brug Docker-imaget med navnet boernetoej-backend
-    # Det er et image, vi tidligere har bygget med Dockerfile
-    # Der buildes altså ikke her – der startes kun en container
+
+    build:
+      context: .
+      # Her siger vi: byg Docker-imaget ud fra Dockerfile
+      # Dockerfile skal ligge i projektmappen (samme mappe som docker-compose.yml)
+      # Derfor forsøger Docker IKKE at hente et image fra Docker Hub
 
     ports:
       - "127.0.0.1:8080:8080"
@@ -29,10 +31,11 @@ services:
       # Sikrer at databasen starter før backend
       - mysql
 
+
   mysql:
     # Database-servicen
     image: mysql:latest
-    # Bruger et færdigt MySQL-image fra DockerHub
+    # Bruger et færdigt MySQL-image fra Docker Hub
 
     container_name: boernetoej-mysql
     # Giver containeren et fast navn
@@ -49,7 +52,7 @@ services:
 
     ports:
       - "127.0.0.1:3307:3306"
-      # Databasen eksponeres kun lokalt (sikkerhed)
+      # Databasen eksponeres kun lokalt
       # 3307 på host → 3306 i containeren
 
     volumes:
