@@ -8,6 +8,9 @@ on:
     # Når der pushes til main kører CI, Hvis nogen ændrer i main, bliver koden testet
   pull_request:
     branches: [ "main" ]
+    workflow_dispatch:
+
+    
 #Når der laves pull request til main, CI kører  når man laver en pull request
 
 
