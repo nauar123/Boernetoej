@@ -1,30 +1,50 @@
 name: Java CI
+#Navnet på workflowet
+
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main" ] 
+    # Når der pushes til main kører CI, Hvis nogen ændrer i main, bliver koden testet
   pull_request:
     branches: [ "main" ]
+#Når der laves pull request til main, CI kører  når man laver en pull request
+
 
 jobs:
   test:
     runs-on: ubuntu-latest
+#Her defineres et job, kaldet test. det en samlet opgave github action skal udføre- 
+# I dette tilfælde bruges ubuntu-latest, som betyder  at jobbet køres på en
+#Linux-maskine med  Ubuntu-version.
 
     steps:
-      # Henter koden fra repoet
+#de handlinger der udføres i rækkefølge inde i jobbet. hvert step er en opgave
+# tilsammen udgør det CI processen
+    
+      # Henter kildekoden fra GitHub-repositoryet og lægger den på den virtuelle maskine, som CI-jobbet kører på. 
+      #Uden dette step ville workflowet ikke have adgang til projektets kode
       - uses: actions/checkout@v4
 
-      # Sætter Java 21 op
+      # Sætter Java applikationen  op, så den kan bygges og testes
       - uses: actions/setup-java@v4
         with:
           distribution: 'temurin'
           java-version: '21'
+#java version 21
 
-      # Cacher Maven dependencies
+
+      # Akiverer caching i Github Actions. 
       - uses: actions/cache@v4
         with:
           path: ~/.m2/repository
+          #Her angives den mappe der skal cache, maven gemmer alle downloadede dependencies i den mappe
+          #(sikre man ikke skal hente dem ved næste build
           key: maven-${{ hashFiles('**/pom.xml') }}
+#Det her er cache-nøglen. Den ændres kun hvis projekts dependencies ændres i pom.xml
 
-      # Kører tests
+
+
+      # Kører maven kommandoen mvn test, det bygger projektet og kører alle tests. 
+      #Hvis en test fejler stopper workflowet og markeres som fejlet, det er hele formålet med CI
       - run: mvn test
